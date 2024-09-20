@@ -13,8 +13,10 @@ highScoreElement.innerText = `High Score: ${highScore}`;
 
 
 const changeFoodPosition = () => {
-    foodX = Math.floor(Math.random() * 30) + 1;
-    foodY = Math.floor(Math.random() * 30) + 1;
+    do {
+        foodX = Math.floor(Math.random() * 30) + 1;
+        foodY = Math.floor(Math.random() * 30) + 1;
+    } while (snakeBody.some(([x, y]) => x === foodX && y === foodY)); 
 }
 
 const handleGameOver = () => {
@@ -24,21 +26,21 @@ const handleGameOver = () => {
 }
 
 const changeDirection = (e) => {
-    if(e.key === "ArrowUp" && velocityY != 1 || e.key === "w" && velocityY != 1) {
+    if ((e.key === "ArrowUp" || e.key === "w") && velocityY === 0) {
         velocityX = 0;
         velocityY = -1;
-    } else if (e.key === "ArrowDown" && velocityY != 1 || e.key === "s" && velocityY != 1) {
+    } else if ((e.key === "ArrowDown" || e.key === "s") && velocityY === 0) {
         velocityX = 0;
         velocityY = 1;
-    } else if (e.key === "ArrowLeft" && velocityX != 1 || e.key === "a" && velocityX != 1) {
+    } else if ((e.key === "ArrowLeft" || e.key === "a") && velocityX === 0) {
         velocityX = -1;
         velocityY = 0;
-    } else if (e.key === "ArrowRight" && velocityX != 1 || e.key === "d" && velocityX != 1) {
+    } else if ((e.key === "ArrowRight" || e.key === "d") && velocityX === 0) {
         velocityX = 1;
         velocityY = 0;
     }
-    initGame()
 }
+
 
 controls.forEach(key => {
     key.addEventListener("click", () => changeDirection({key: key.dataset.key}));
@@ -84,6 +86,4 @@ const initGame = () => {
 
 changeFoodPosition();
 setIntervalId = setInterval(initGame, 125);
-
-
-document.addEventListener("keydown", changeDirection);0
+document.addEventListener("keydown", changeDirection);
